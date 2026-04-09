@@ -1,7 +1,7 @@
 # INF236-SJ-09
----
+
 # Grupo 9
----
+
 Este es el repositorio del *Grupo 9*, cuyos integrantes son:
 
 * Victoria Andrea Medina Castro - Rol
@@ -9,12 +9,10 @@ Este es el repositorio del *Grupo 9*, cuyos integrantes son:
 * Gabriel Alejandro Toro Varela - Rol
 * Vicente Ignacio Rodríguez Rogers - 202273503-1
 * **Tutor**: Matias Barrera
----
-## Wiki
----
-> Obtener enlace desde el home de la wiki del repo.
 
-Puede acceder a la Wiki mediante el siguiente [enlace](https://gitlab.inf.utfsm.cl/)
+## Wiki
+
+Puede acceder a la Wiki mediante el siguiente [enlace](https://gitlab.inf.utfsm.cl/inf236-2026-1/inf236-sj-09/-/wikis/home)
 
 ## Videos
 
