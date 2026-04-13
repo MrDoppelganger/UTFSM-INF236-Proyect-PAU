@@ -6,7 +6,7 @@ Este es el repositorio del *Grupo 9*, cuyos integrantes son:
 
 * Victoria Andrea Medina Castro - 202373586-8
 * Javier Alonso Gana Muñoz - 202373540-k
-* Gabriel Alejandro Toro Varela - Rol
+* Gabriel Alejandro Toro Varela - 202204557-4
 * Vicente Ignacio Rodríguez Rogers - 202273503-1
 * **Tutor**: Matias Barrera
 
