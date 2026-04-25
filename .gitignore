@@ -1,0 +1,4 @@
+#Ignoramos node_mude para no sobrecargar de memoria el proyecto.
+node_modules/
+#Ignoramos ideas.txt que solo contiene ideas sueltas y no es relevante para el proyecto.
+Docs/ideas.txt

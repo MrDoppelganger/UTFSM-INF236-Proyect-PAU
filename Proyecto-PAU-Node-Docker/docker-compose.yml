@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  app:
-    build: .
+  server:
+    build: ./server
     ports:
       - "3000:3000"
     environment:
@@ -13,7 +13,7 @@ services:
     depends_on:
       - postgres_db
     volumes:
-      - ./:/app
+      - ./server:/app
       - /app/node_modules
 
   postgres_db:
