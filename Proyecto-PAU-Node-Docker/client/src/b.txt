@@ -1,1 +1,0 @@
-[Código fuente de React (Vistas de postulación, etc.)]

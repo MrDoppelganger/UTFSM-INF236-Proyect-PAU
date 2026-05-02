@@ -1,10 +1,26 @@
 version: '3.8'
+
 services:
+  #------------------FRONTEND (React)-------------------------
+  client:
+    build: ./client
+    ports:
+      - "3000:3000" # El client se mapeara en el puerto 3000
+    volumes:
+      - ./client:/app          # Refleja tus cambios de código en tiempo real
+      - /app/node_modules      # Evita que tu node_modules local pise al del contenedor
+    stdin_open: true           # Necesario para que React no se cierre inmediatamente
+    tty: true                  # Permite interactuar con la consola de React
+    depends_on:
+      - server                 # Opcional: Asegura que el back inicie antes que el front
+
+  #-------------------BACKEND (Node.js)-------------------------
   server:
     build: ./server
     ports:
-      - "3000:3000"
+      - "5000:5000" # El server trabajara en el puerto 5000
     environment:
+      - PORT=5000 
       - DB_HOST=postgres_db
       - DB_PORT=5432
       - DB_USER=user
@@ -16,6 +32,7 @@ services:
       - ./server:/app
       - /app/node_modules
 
+  # --- BASE DE DATOS (PostgreSQL) ---
   postgres_db:
     image: postgres:15-alpine
     environment:

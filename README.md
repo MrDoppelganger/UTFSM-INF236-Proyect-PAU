@@ -1,27 +1,60 @@
-# INF236-SJ-09
+# Proyecto PAU: Experiencia de postulación
 
-# Grupo 9
 
-Este es el repositorio del *Grupo 9*, cuyos integrantes son:
+> **Universidad:** Universidad Técnica Federico Santa María (UTFSM)  
+> **Curso:** Análisis y diseño de Software(INF236) — 1° Semestre/2026  
+> **Grupo:** 9
+>
+> **Integrantes:**
+> * Vicente Rodríguez Rogers        | 202273503-1 
+> * Victoria Andrea Medina Castro   | 202373586-8 
+> * Gabriel Alejandro Toro Varela   | 202204557-4
+> * Javier Alonso Gana Muñoz        | 202373540-k       
+>
+> **Tutor:** Matias Barrera
 
-* Victoria Andrea Medina Castro - 202373586-8
-* Javier Alonso Gana Muñoz - 202373540-k
-* Gabriel Alejandro Toro Varela - 202204557-4
-* Vicente Ignacio Rodríguez Rogers - 202273503-1
-* **Tutor**: Matias Barrera
+---
 
 ## Wiki
 
-Puede acceder a la Wiki mediante el siguiente [enlace](https://gitlab.inf.utfsm.cl/inf236-2026-1/inf236-sj-09/-/wikis/home)
 
-## Videos
+### <u> **Acceso a la pagina:** </u> [HOME](https://gitlab.inf.utfsm.cl/inf236-2026-1/inf236-sj-09/-/wikis/home)
 
-> Reemplazar con los enlaces correspondientes
 
-* [Video presentación cliente](https://www.youtube.com)
-* [Video presentación avance 1](https://www.youtube.com/)
-* Etc ...
+### <u>**Consideraciones**: </u>  
 
-## Aspectos técnicos relevantes
+## Aspectos Tecnicos
 
-_Todo aspecto relevante cuando para poder usar el proyecto o consideraciones del proyecto base a ser entregado_
+### <u>**Estructura del repositorio** </u>
+
+```bash
+├── Docs/                                   #Documentos del proyecto.
+│   └── Evidencia.ipynb                     #Evidencia del levantamiento del proyecto.
+├── Proyecto-Pau-Node-Docker/               #Proyecto dockeriazado.
+│   ├── client/                             #Interfaz de usuario
+│   │   ├── public/                         #Archivos estaticos.
+│   │   ├── src/                            #componentes visuales.
+│   │   ├── Dockerfile                      #Config del docker para el Front.
+│   │   ├── index.html                      #Punto inicial del React y vite                      
+│   │   ├── package.json                    #Dependencias del front-end
+│   │   └── vite.config.js                  #Config del servidor
+│   ├── server/                             #Aqui trabajamos el Node.
+│   │   ├── src/                            #Cosas de node (controladores y cosas).  
+│   │   ├── Dockerfile                      #Config del docker para el back.
+│   │   ├── index.js                        #Punto inicial del servidor node
+│   │   ├── db.js
+│   │   └── package.json
+│   └── docker-compose.yml                  #Docker que conecta ambas carpetas.
+├── .gitignore
+└── README.md 
+
+```
+### <u> **Levantamiento del docker**: </u>
+*  Se Debe ingresar estar dentro de la carpeta ***/Proyecto-PAU-Node-Docker***
+*   Al abrir una terminal dentro de este entorno se ejecuta el comnado: ***docker compose up --build***
+
+### <u> **Consideraciones**: </u>
+* Se Reorganizo el repositorio con el formato client-server, separando la seccion del front-end con la del back-end para tener un proyecto mas profesional y ordenado. Por esta misma razon se realizaron las modificaciones pertinentes para que el levantamiento del docker considere estos cambios.
+* El front-end (client/React) fue creado apartir de ***vite***.
+* Se actualizo el node a una version mas actual, pasando de la 18 a la 22.
+* Se eligio no sobrecargar el repositorio subiendo los node_modules, que se descargaran automaticamente al levantar el repositorio.
