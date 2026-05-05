@@ -2,20 +2,17 @@ const pool = require('./db');
 
 //----------------------------Query: Creacion de tablas-----------------------------------
 const setupQuery = `
-  -- Reiniciamos toda las tablas para poder volver a cargarlas.
-  DROP TABLE IF EXISTS nominas_pago CASCADE;
+  -- Hacemos limpieza de las tablas antiguas antes de crear las nuevas
+  DROP TABLE IF EXISTS asignatura_docente CASCADE;
   DROP TABLE IF EXISTS postulaciones CASCADE;
-  DROP TABLE IF EXISTS vacantes CASCADE;
+  DROP TABLE IF EXISTS ayudantia CASCADE;
   DROP TABLE IF EXISTS estudiantes CASCADE;
   DROP TABLE IF EXISTS asignaturas CASCADE;
   DROP TABLE IF EXISTS docentes CASCADE;
   DROP TABLE IF EXISTS jefaturas CASCADE;
+  DROP TABLE IF EXISTS usuarios CASCADE;
 
-  -- ==========================================
-  -- 2. TABLAS PADRE E INDEPENDIENTES
-  -- ==========================================
-
-  -- Tabla "Superclase"
+  -- ================================ Tabla padre (Super Clases) ================================
   CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     rut_numero INT UNIQUE NOT NULL,
@@ -25,22 +22,11 @@ const setupQuery = `
     nombre VARCHAR(100) NOT NULL
   );
 
-  CREATE TABLE asignaturas (
-    id SERIAL PRIMARY KEY,
-    nombre_asignatura VARCHAR(100) NOT NULL,
-    departamento VARCHAR(100) NOT NULL
-  );
+  -- ======================================= Tablas hijos =========================================
 
-  -- ==========================================
-  -- 3. TABLAS "HIJAS" (Herencia)
-  -- ==========================================
-
-  -- Nota: Su llave primaria es también llave foránea hacia 'usuarios'
-  CREATE TABLE estudiantes (
+  CREATE TABLE jefaturas (
     usuario_id INT PRIMARY KEY REFERENCES usuarios(id) ON DELETE CASCADE,
-    carrera VARCHAR(100) NOT NULL,
-    estado_matricula BOOLEAN DEFAULT TRUE,
-    situacion_academica VARCHAR(50)
+    carrera_supervisa VARCHAR(100) NOT NULL
   );
 
   CREATE TABLE docentes (
@@ -48,16 +34,24 @@ const setupQuery = `
     departamento VARCHAR(100) NOT NULL
   );
 
-  CREATE TABLE jefaturas (
+  CREATE TABLE estudiantes (
     usuario_id INT PRIMARY KEY REFERENCES usuarios(id) ON DELETE CASCADE,
-    carrera_supervisa VARCHAR(100) NOT NULL
+    carrera VARCHAR(100) NOT NULL,
+    estado_matricula BOOLEAN DEFAULT TRUE,
+    situacion_academica VARCHAR(50),
+    estado_cursoEAA VARCHAR(50)
   );
 
-  -- ==========================================
-  -- 4. TABLAS DE RELACIÓN (Dependientes)
-  -- ==========================================
+  -- ============================ Tablas de Infrastructura Y Relaciones ===========================
 
-  CREATE TABLE vacantes (
+  CREATE TABLE asignaturas (
+    id SERIAL PRIMARY KEY,
+    nombre_asignatura VARCHAR(100) NOT NULL,
+    departamento VARCHAR(100) NOT NULL,
+    jefatura_id INT REFERENCES jefaturas(usuario_id) ON DELETE SET NULL
+  );
+
+  CREATE TABLE ayudantia (
     id SERIAL PRIMARY KEY,
     tipo_ayudantia VARCHAR(50) NOT NULL,
     cantidad_cupos INT DEFAULT 1,
@@ -71,9 +65,15 @@ const setupQuery = `
     id SERIAL PRIMARY KEY,
     fecha_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado_actual VARCHAR(50) DEFAULT 'En Revisión',
-    vacante_id INT REFERENCES vacantes(id) ON DELETE CASCADE,
+    ayudantia_id INT REFERENCES ayudantia(id) ON DELETE CASCADE,
     estudiante_id INT REFERENCES estudiantes(usuario_id) ON DELETE CASCADE,
     jefatura_id INT REFERENCES jefaturas(usuario_id) ON DELETE SET NULL
+  );
+
+  CREATE TABLE asignatura_docente (
+    asignatura_id INT REFERENCES asignaturas(id) ON DELETE CASCADE,
+    docente_id INT REFERENCES docentes(usuario_id) ON DELETE CASCADE,
+    PRIMARY KEY (asignatura_id, docente_id)
   );
 `;
 
