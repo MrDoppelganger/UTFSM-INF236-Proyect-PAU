@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
     host: true, // Esto es vital para Docker: expone el servidor a la red del contenedor (0.0.0.0)
     port: 3000, // Fuerza a Vite a usar el puerto 3000 que configuramos en docker-compose
