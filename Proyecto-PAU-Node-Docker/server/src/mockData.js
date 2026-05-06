@@ -29,23 +29,34 @@ const insertMockDataQuery = `
   -- 4. INSERTAR ASIGNATURAS (Depende de Jefatura)
   INSERT INTO asignaturas (nombre_asignatura, departamento, jefatura_id) VALUES
   ('Estructuras de Datos', 'Informática', 4),
-  ('Programación de Software', 'Informática', 4);
+  ('Programación de Software', 'Informática', 4),
+  ('Bases de Datos', 'Informática', 4),
+  ('Ingeniería de Software', 'Informática', 4),
+  ('Arquitectura de Computadores', 'Informática', 4);
 
   -- 5. RELACIÓN MUCHOS A MUCHOS: ASIGNATURA_DOCENTE
   INSERT INTO asignatura_docente (asignatura_id, docente_id) VALUES
   (1, 1), -- Roberto en Estructuras
   (1, 2), -- Ada en Estructuras
-  (2, 2); -- Ada en Programación
+  (2, 2), -- Ada en Programación
+  (3, 1), -- Roberto en BD
+  (4, 2), -- Ada en Ing Software
+  (5, 1); -- Roberto en Arquitectura
 
   -- 6. INSERTAR AYUDANTÍAS (Vacantes)
   INSERT INTO ayudantia (tipo_ayudantia, cantidad_cupos, carga_horaria, requisitos, asignatura_id, docente_id) VALUES
   ('Laboratorio', 2, 6, 'Haber aprobado con nota > 80 y manejo de C++', 1, 1),
-  ('Cátedra', 1, 4, 'Promedio general > 75', 2, 2);
+  ('Cátedra', 1, 4, 'Promedio general > 75', 2, 2),
+  ('Corrección', 3, 4, 'Aprobar BD con > 70', 3, 1),
+  ('Laboratorio', 2, 6, 'Conocimientos de Docker y Node', 4, 2),
+  ('Cátedra', 1, 4, 'Aprobación de Arquitectura', 5, 1);
 
   -- 7. INSERTAR POSTULACIONES
   INSERT INTO postulaciones (estado_actual, ayudantia_id, estudiante_id, jefatura_id) VALUES
   ('En Revisión', 1, 3, 4),
-  ('Aceptada', 2, 5, 4);
+  ('Aceptada', 2, 5, 4),
+  ('Aceptada', 3, 3, 4),
+  ('Rechazada', 5, 3, 4);
 `;
 
 const runMockData = async () => {

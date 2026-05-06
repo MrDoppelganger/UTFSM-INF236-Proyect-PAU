@@ -66,3 +66,53 @@ app.get('/api/ayudantias', async (req, res) => {
     res.status(500).send('Error en el servidor');
   }
 });
+
+// Ruta para obtener la informacion del estudiante
+app.get('/api/estudiante/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = `
+      SELECT u.id, u.nombre, u.correo, e.carrera, e.situacion_academica, e.estado_cursoEAA 
+      FROM usuarios u 
+      INNER JOIN estudiantes e ON u.id = e.usuario_id 
+      WHERE u.id = $1;
+    `;
+    const result = await pool.query(query, [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: "Estudiante no encontrado" });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error en el servidor');
+  }
+});
+
+// Ruta para obtener las postulaciones de un estudiante
+app.get('/api/estudiante/:id/postulaciones', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = `
+      SELECT 
+        p.id AS postulacion_id,
+        p.estado_actual,
+        p.fecha_envio,
+        ay.tipo_ayudantia,
+        ay.carga_horaria,
+        ay.requisitos,
+        asig.nombre_asignatura,
+        asig.departamento,
+        u.nombre AS profesor_encargado
+      FROM postulaciones p
+      INNER JOIN ayudantia ay ON p.ayudantia_id = ay.id
+      INNER JOIN asignaturas asig ON ay.asignatura_id = asig.id
+      LEFT JOIN docentes doc ON ay.docente_id = doc.usuario_id
+      LEFT JOIN usuarios u ON doc.usuario_id = u.id
+      WHERE p.estudiante_id = $1
+      ORDER BY p.fecha_envio DESC;
+    `;
+    const result = await pool.query(query, [id]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error en el servidor');
+  }
+});

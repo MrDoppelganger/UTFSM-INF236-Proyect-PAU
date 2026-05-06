@@ -15,10 +15,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://server:5000', // Apunta al nombre del contenedor del backend en Docker
-        changeOrigin: true,
-        // Tu index.js tiene las rutas "/messages" y "/save" (sin "api").
-        // Esta línea toma cualquier petición que empiece con "/api" y le borra el "/api" antes de enviarla a Node.
-        rewrite: (path) => path.replace(/^\/api/, '')
+        changeOrigin: true
       }
     }
   }
