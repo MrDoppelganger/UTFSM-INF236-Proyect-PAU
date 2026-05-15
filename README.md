@@ -31,30 +31,23 @@
 ├── Docs/                                   #Documentos del proyecto.
 │   └── Evidencia.ipynb                     #Evidencia del levantamiento del proyecto.
 ├── Proyecto-Pau-Node-Docker/               #Proyecto dockeriazado.
-│   ├── client/                             #Interfaz de usuario
-│   │   ├── public/                         #Archivos estaticos.
-│   │   ├── src/                            #componentes visuales.
-│   │   ├── Dockerfile                      #Config del docker para el Front.
-│   │   ├── index.html                      #Punto inicial del React y vite                      
-│   │   ├── package.json                    #Dependencias del front-end
-│   │   └── vite.config.js                  #Config del servidor
-│   ├── server/                             #Aqui trabajamos el Node.
-│   │   ├── src/                            #Cosas de node (controladores y cosas).  
-│   │   ├── Dockerfile                      #Config del docker para el back.
-│   │   ├── index.js                        #Punto inicial del servidor node
-│   │   ├── db.js
-│   │   └── package.json
+│   ├── client/                             #Front-end (Con React, vite y Tailwind CSS)
+│   ├── server/                             #Back-end (Con Node y postgreSQL)
 │   └── docker-compose.yml                  #Docker que conecta ambas carpetas.
 ├── .gitignore
 └── README.md 
 
 ```
-### <u> **Levantamiento del docker**: </u>
-*  Se Debe ingresar estar dentro de la carpeta ***/Proyecto-PAU-Node-Docker***
-*   Al abrir una terminal dentro de este entorno se ejecuta el comnado: ***docker compose up --build***
+### <u> **Levantamiento**: </u>
+*   Se recomienda asegurar que no see posee nada en los puertos del ***localhost: 3000*** y ***5000*** 
+*   Se Debe ingresar estar dentro de la carpeta ***/Proyecto-PAU-Node-Docker***  
+*   Al abrir una terminal dentro de este entorno se ejecuta el comnado: ***docker compose up --build***  
+*   Se accede desde el ***http://localhost:3000/***
+*   Es importante considerar las indicaciones dentro de los README's interiores tambien.
 
 ### <u> **Consideraciones**: </u>
-* Se Reorganizo el repositorio con el formato client-server, separando la seccion del front-end con la del back-end para tener un proyecto mas profesional y ordenado. Por esta misma razon se realizaron las modificaciones pertinentes para que el levantamiento del docker considere estos cambios.
-* El front-end (client/React) fue creado apartir de ***vite***.
-* Se actualizo el node a una version mas actual, pasando de la 18 a la 22.
-* Se eligio no sobrecargar el repositorio subiendo los node_modules, que se descargaran automaticamente al levantar el repositorio.
+*   Se Reorganizo el repositorio con el formato client-server, separando la seccion del front-end con la del back-end para tener un proyecto mas profesional y ordenado. Por esta misma razon se realizaron las modificaciones pertinentes para que el levantamiento del docker considere estos cambios.
+*   El front-end (client/React) fue creado apartir de **vite**.
+*   Se actualizo el node a una version mas actual, pasando de la 18 a la 22.
+*   Se eligio no sobrecargar el repositorio subiendo los node_modules, que se descargaran automaticamente al levantar el repositorio.
+*   Se utilizo el framework **Tailwind CSS** para react, asi tener un front-end mas pulido y moderno.
