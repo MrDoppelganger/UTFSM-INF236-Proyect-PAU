@@ -1,8 +1,17 @@
 import React from 'react';
 
-export default function Sidebar({ student }) {
+export default function Sidebar({ student, onOpenAvanceCurricular }) {
   // Determine certificate status
-  const hasCertificate = student?.estado_cursoEAA === 'Aprovado' || student?.estado_cursoEAA === 'Aprobado';
+  const estadoEAA = student?.estado_cursoEAA || 'Sin Realizar';
+  let bubbleColor = 'bg-slate-500';
+  let textColor = 'text-slate-600 dark:text-slate-400';
+  if (estadoEAA === 'Vigente' || estadoEAA === 'Aprobado' || estadoEAA === 'Aprovado') {
+    bubbleColor = 'bg-green-500';
+    textColor = 'text-green-600 dark:text-green-400';
+  } else if (estadoEAA === 'Expirado') {
+    bubbleColor = 'bg-amber-500';
+    textColor = 'text-amber-600 dark:text-amber-400';
+  }
 
   return (
     <aside className="w-full lg:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col h-full shadow-sm sticky top-0 lg:h-screen transition-colors duration-300">
@@ -38,12 +47,24 @@ export default function Sidebar({ student }) {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-600 dark:text-slate-400">Curso EAA</span>
                 <div className="flex items-center gap-1.5">
-                  <span className={`w-2.5 h-2.5 rounded-full ${hasCertificate ? 'bg-green-500' : 'bg-red-500'} shadow-sm`}></span>
-                  <span className={`text-sm font-medium ${hasCertificate ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                    {hasCertificate ? 'Vigente' : 'Pendiente'}
+                  <span className={`w-2.5 h-2.5 rounded-full ${bubbleColor} shadow-sm`}></span>
+                  <span className={`text-sm font-medium ${textColor}`}>
+                    {estadoEAA}
                   </span>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700">
+              <button 
+                onClick={onOpenAvanceCurricular}
+                className="w-full flex items-center justify-between px-3 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors group"
+              >
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-brand-primary dark:group-hover:text-blue-400">Ver Avance Curricular</span>
+                <svg className="w-4 h-4 text-slate-400 group-hover:text-brand-primary dark:group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>

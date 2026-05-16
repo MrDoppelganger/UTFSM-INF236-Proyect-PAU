@@ -52,11 +52,15 @@ app.get('/api/ayudantias', async (req, res) => {
         ay.requisitos,
         asig.nombre_asignatura,
         asig.departamento,
-        u.nombre AS profesor_encargado
+        asig.cantidad_alumnos,
+        u_coord.nombre AS profesor_coordinador,
+        (SELECT ARRAY_AGG(u_cat.nombre) 
+         FROM asignatura_docente ad 
+         JOIN usuarios u_cat ON ad.docente_id = u_cat.id 
+         WHERE ad.asignatura_id = asig.id) AS profesores_catedra
       FROM ayudantia ay
       INNER JOIN asignaturas asig ON ay.asignatura_id = asig.id
-      LEFT JOIN docentes doc ON ay.docente_id = doc.usuario_id
-      LEFT JOIN usuarios u ON doc.usuario_id = u.id;
+      LEFT JOIN usuarios u_coord ON asig.coordinador_id = u_coord.id;
     `;
     
     const result = await pool.query(query);
@@ -100,14 +104,40 @@ app.get('/api/estudiante/:id/postulaciones', async (req, res) => {
         ay.requisitos,
         asig.nombre_asignatura,
         asig.departamento,
-        u.nombre AS profesor_encargado
+        asig.cantidad_alumnos,
+        u_coord.nombre AS profesor_coordinador,
+        (SELECT ARRAY_AGG(u_cat.nombre) 
+         FROM asignatura_docente ad 
+         JOIN usuarios u_cat ON ad.docente_id = u_cat.id 
+         WHERE ad.asignatura_id = asig.id) AS profesores_catedra
       FROM postulaciones p
       INNER JOIN ayudantia ay ON p.ayudantia_id = ay.id
       INNER JOIN asignaturas asig ON ay.asignatura_id = asig.id
-      LEFT JOIN docentes doc ON ay.docente_id = doc.usuario_id
-      LEFT JOIN usuarios u ON doc.usuario_id = u.id
+      LEFT JOIN usuarios u_coord ON asig.coordinador_id = u_coord.id
       WHERE p.estudiante_id = $1
       ORDER BY p.fecha_envio DESC;
+    `;
+    const result = await pool.query(query, [id]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error en el servidor');
+  }
+});
+
+// Ruta para obtener el avance curricular
+app.get('/api/estudiante/:id/avance', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const query = `
+      SELECT 
+        ac.nota,
+        asig.nombre_asignatura,
+        asig.departamento
+      FROM avance_curricular ac
+      INNER JOIN asignaturas asig ON ac.asignatura_id = asig.id
+      WHERE ac.estudiante_id = $1
+      ORDER BY asig.nombre_asignatura ASC;
     `;
     const result = await pool.query(query, [id]);
     res.json(result.rows);

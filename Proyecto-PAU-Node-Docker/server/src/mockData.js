@@ -3,7 +3,7 @@ const pool = require('./db');
 const insertMockDataQuery = `
   -- 1. LIMPIAR DATOS PREVIOS (Opcional, pero recomendado para evitar duplicados de RUT/Correo)
   -- Usamos TRUNCATE con CASCADE para limpiar todo en orden.
-  TRUNCATE TABLE usuarios, asignaturas, asignatura_docente, ayudantia, postulaciones RESTART IDENTITY CASCADE;
+  TRUNCATE TABLE usuarios, asignaturas, asignatura_docente, ayudantia, postulaciones, avance_curricular RESTART IDENTITY CASCADE;
 
   -- 2. INSERTAR USUARIOS (Superclase)
   -- IDs asignados automáticamente: 1, 2, 3, 4, 5...
@@ -12,36 +12,38 @@ const insertMockDataQuery = `
   (11222333, 'K', 'profe.informatica@usm.cl', 'password123', 'Ada Lovelace'),      -- ID 2
   (20444555, '0', 'estudiante.pau@usm.cl', 'password123', 'Víctor Jara'),          -- ID 3
   (18555666, '7', 'jefe.carrera@usm.cl', 'password123', 'Eloísa Díaz'),            -- ID 4
-  (21666777, '2', 'ayudante.pro@usm.cl', 'password123', 'Gabriela Mistral');       -- ID 5
+  (21666777, '2', 'ayudante.pro@usm.cl', 'password123', 'Gabriela Mistral'),       -- ID 5
+  (15333444, '1', 'profe.tercero@usm.cl', 'password123', 'Alan Turing');           -- ID 6
 
   -- 3. ASIGNAR ROLES (Herencia)
   INSERT INTO docentes (usuario_id, departamento) VALUES
   (1, 'Informática'),
-  (2, 'Informática');
+  (2, 'Informática'),
+  (6, 'Informática');
 
   INSERT INTO jefaturas (usuario_id, carrera_supervisa) VALUES
   (4, 'Ingeniería Civil Informática');
 
   INSERT INTO estudiantes (usuario_id, carrera, situacion_academica, estado_cursoEAA) VALUES
-  (3, 'Ingeniería Civil Informática', 'Regular', 'Aprovado'),
-  (5, 'Ingeniería Civil Matemática', 'Regular', 'Aprovado');
+  (3, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
+  (5, 'Ingeniería Civil Matemática', 'Regular', 'Sin Realizar');
 
   -- 4. INSERTAR ASIGNATURAS (Depende de Jefatura)
-  INSERT INTO asignaturas (nombre_asignatura, departamento, jefatura_id) VALUES
-  ('Estructuras de Datos', 'Informática', 4),
-  ('Programación de Software', 'Informática', 4),
-  ('Bases de Datos', 'Informática', 4),
-  ('Ingeniería de Software', 'Informática', 4),
-  ('Arquitectura de Computadores', 'Informática', 4);
+  INSERT INTO asignaturas (nombre_asignatura, departamento, cantidad_alumnos, coordinador_id, jefatura_id) VALUES
+  ('Estructuras de Datos', 'Informática', 40, 1, 4),
+  ('Programación de Software', 'Informática', 60, 6, 4),
+  ('Bases de Datos', 'Informática', 50, 1, 4),
+  ('Ingeniería de Software', 'Informática', 30, 2, 4),
+  ('Arquitectura de Computadores', 'Informática', 45, 1, 4);
 
   -- 5. RELACIÓN MUCHOS A MUCHOS: ASIGNATURA_DOCENTE
   INSERT INTO asignatura_docente (asignatura_id, docente_id) VALUES
-  (1, 1), -- Roberto en Estructuras
-  (1, 2), -- Ada en Estructuras
-  (2, 2), -- Ada en Programación
-  (3, 1), -- Roberto en BD
-  (4, 2), -- Ada en Ing Software
-  (5, 1); -- Roberto en Arquitectura
+  (1, 1), -- Roberto en Estructuras (Roberto coordinador)
+  (2, 2), -- Ada en Programación (Alan coordinador)
+  (3, 1), -- Roberto en BD (Roberto coordinador)
+  (3, 2), -- Ada en BD
+  (4, 2), -- Ada en Ing Software (Ada coordinador)
+  (5, 1); -- Roberto en Arquitectura (Roberto coordinador)
 
   -- 6. INSERTAR AYUDANTÍAS (Vacantes)
   INSERT INTO ayudantia (tipo_ayudantia, cantidad_cupos, carga_horaria, requisitos, asignatura_id, docente_id) VALUES
@@ -57,6 +59,14 @@ const insertMockDataQuery = `
   ('Aceptada', 2, 5, 4),
   ('Aceptada', 3, 3, 4),
   ('Rechazada', 5, 3, 4);
+
+  -- 8. AVANCE CURRICULAR
+  INSERT INTO avance_curricular (estudiante_id, asignatura_id, nota) VALUES
+  (3, 1, 80),
+  (3, 2, 60),
+  (3, 4, 95),
+  (5, 1, 55),
+  (5, 3, 70);
 `;
 
 const runMockData = async () => {

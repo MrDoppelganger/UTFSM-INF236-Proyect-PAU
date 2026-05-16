@@ -1,4 +1,33 @@
-# React + Vite
+# Cliente
+
+### <u>Estructura</u>:
+
+```bash
+├──client/
+    ├── node_modules                    #Extensiones del front-end (no se sube al repo)  
+    ├── public/                         #Archivos estaticos.
+    ├── src/                            #componentes visuales.
+        ├── assets/
+        ├── components/
+        ├── context/
+        ├── pages/
+            └── Dashboard.jsx
+        ├── App.css
+        ├── App.jsx
+        ├── index.css
+        └── main.jsx    
+    ├── Dockerfile                      #Config del docker para el Front.
+    ├── index.html                      #Punto inicial del React y vite                      
+    ├── package-lock.json
+    ├── package.json                    #Dependencias del front-end
+    ├── README.md                   
+    └── vite.config.js                  #Config del servidor
+```
+### <u> Consideraciones</u>:
+
+---
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

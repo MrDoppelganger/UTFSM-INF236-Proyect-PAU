@@ -10,9 +10,13 @@ export default function Dashboard() {
   const [ayudantias, setAyudantias] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Estado para el modal
+  // Estado para el modal de vacante
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Estado para el avance curricular
+  const [avanceCurricular, setAvanceCurricular] = useState([]);
+  const [isAvanceModalOpen, setIsAvanceModalOpen] = useState(false);
 
   // El ID del estudiante de prueba es 3 (Víctor Jara)
   const STUDENT_ID = 3;
@@ -56,9 +60,22 @@ export default function Dashboard() {
     setIsModalOpen(true);
   };
 
+  const openAvanceCurricular = async () => {
+    try {
+      const res = await fetch(`/api/estudiante/${STUDENT_ID}/avance`);
+      if (res.ok) {
+        const data = await res.json();
+        setAvanceCurricular(data);
+        setIsAvanceModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Error fetching avance curricular:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
-      <Sidebar student={student} />
+      <Sidebar student={student} onOpenAvanceCurricular={openAvanceCurricular} />
 
       <main className="flex-1 flex flex-col max-h-screen overflow-y-auto">
         <header className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
@@ -173,8 +190,16 @@ export default function Dashboard() {
                 <span className="text-slate-900 dark:text-white font-medium">{selectedItem.carga_horaria} horas/semana</span>
               </div>
               <div>
-                <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Profesor</span>
-                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.profesor_encargado || 'No asignado'}</span>
+                <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Profesor Coordinador</span>
+                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.profesor_coordinador || 'No asignado'}</span>
+              </div>
+              <div>
+                <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Profesores Cátedra</span>
+                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.profesores_catedra ? selectedItem.profesores_catedra.join(', ') : 'No asignado'}</span>
+              </div>
+              <div>
+                <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Alumnos matriculados</span>
+                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.cantidad_alumnos || 0}</span>
               </div>
               {selectedItem.estado_actual && (
                 <div>
@@ -198,6 +223,60 @@ export default function Dashboard() {
             )}
           </div>
         )}
+      </Modal>
+
+      {/* Modal de Avance Curricular */}
+      <Modal 
+        isOpen={isAvanceModalOpen} 
+        onClose={() => setIsAvanceModalOpen(false)}
+        title="Mi Avance Curricular"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+            Resumen de asignaturas cursadas y calificaciones obtenidas.
+          </p>
+          <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-sm">
+              <thead className="bg-slate-50 dark:bg-slate-800/50">
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold text-slate-900 dark:text-white">Asignatura</th>
+                  <th className="px-4 py-3 text-center font-semibold text-slate-900 dark:text-white w-24">Nota</th>
+                  <th className="px-4 py-3 text-center font-semibold text-slate-900 dark:text-white w-28">Estado</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-700 bg-white dark:bg-slate-800">
+                {avanceCurricular.length > 0 ? avanceCurricular.map((item, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300 font-medium">
+                      {item.nombre_asignatura}
+                      <span className="block text-xs text-slate-500 dark:text-slate-400 font-normal">{item.departamento}</span>
+                    </td>
+                    <td className="px-4 py-3 text-center text-slate-900 dark:text-white font-semibold">
+                      {item.nota}
+                    </td>
+                    <td className="px-4 py-3 text-center">
+                      {item.nota >= 55 ? (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                          Aprobado
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                          Reprobado
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan="3" className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                      No hay registros curriculares.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </Modal>
     </div>
   );

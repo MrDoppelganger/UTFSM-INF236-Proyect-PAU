@@ -6,6 +6,7 @@ const setupQuery = `
   DROP TABLE IF EXISTS asignatura_docente CASCADE;
   DROP TABLE IF EXISTS postulaciones CASCADE;
   DROP TABLE IF EXISTS ayudantia CASCADE;
+  DROP TABLE IF EXISTS avance_curricular CASCADE;
   DROP TABLE IF EXISTS estudiantes CASCADE;
   DROP TABLE IF EXISTS asignaturas CASCADE;
   DROP TABLE IF EXISTS docentes CASCADE;
@@ -48,6 +49,8 @@ const setupQuery = `
     id SERIAL PRIMARY KEY,
     nombre_asignatura VARCHAR(100) NOT NULL,
     departamento VARCHAR(100) NOT NULL,
+    cantidad_alumnos INT DEFAULT 0,
+    coordinador_id INT REFERENCES docentes(usuario_id) ON DELETE SET NULL,
     jefatura_id INT REFERENCES jefaturas(usuario_id) ON DELETE SET NULL
   );
 
@@ -74,6 +77,13 @@ const setupQuery = `
     asignatura_id INT REFERENCES asignaturas(id) ON DELETE CASCADE,
     docente_id INT REFERENCES docentes(usuario_id) ON DELETE CASCADE,
     PRIMARY KEY (asignatura_id, docente_id)
+  );
+
+  CREATE TABLE avance_curricular (
+    estudiante_id INT REFERENCES estudiantes(usuario_id) ON DELETE CASCADE,
+    asignatura_id INT REFERENCES asignaturas(id) ON DELETE CASCADE,
+    nota INT CHECK (nota >= 0 AND nota <= 100),
+    PRIMARY KEY (estudiante_id, asignatura_id)
   );
 `;
 
