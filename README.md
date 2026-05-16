@@ -45,6 +45,11 @@
 *   Se accede desde el ***http://localhost:3000/***
 *   Es importante considerar las indicaciones dentro de los README's interiores tambien.
 
+## 📷 Video de prototipo
+
+* Enlace al video demostrativo del protipo: [video](https://youtu.be/CzRukkanIzE)
+
+
 ### <u> **Consideraciones**: </u>
 *   Se Reorganizo el repositorio con el formato client-server, separando la seccion del front-end con la del back-end para tener un proyecto mas profesional y ordenado. Por esta misma razon se realizaron las modificaciones pertinentes para que el levantamiento del docker considere estos cambios.
 *   El front-end (client/React) fue creado apartir de **vite**.
