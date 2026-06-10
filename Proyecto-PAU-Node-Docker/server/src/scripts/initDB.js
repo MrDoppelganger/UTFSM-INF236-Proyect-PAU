@@ -1,6 +1,15 @@
-const pool = require('./db');
+//-------------------Librerias--------------------
+const pool = require('../config/db');
 
-//----------------------------Query: Creacion de tablas-----------------------------------
+//------------------Consultas SQL------------------
+/*
+    ------------Query-------------------
+    setupQuery: 
+        Elimina toda las tablas anteriores en caso de
+      que haya y las vuelve a crear para poder llenar
+      la base de datos
+    ----------------------------------
+*/
 const setupQuery = `
   -- Hacemos limpieza de las tablas antiguas antes de crear las nuevas
   DROP TABLE IF EXISTS asignatura_docente CASCADE;
@@ -40,7 +49,7 @@ const setupQuery = `
     carrera VARCHAR(100) NOT NULL,
     estado_matricula BOOLEAN DEFAULT TRUE,
     situacion_academica VARCHAR(50),
-    estado_cursoEAA VARCHAR(50)
+    estado_curso_eaa VARCHAR(50)
   );
 
   -- ============================ Tablas de Infrastructura Y Relaciones ===========================
@@ -49,7 +58,7 @@ const setupQuery = `
     id SERIAL PRIMARY KEY,
     nombre_asignatura VARCHAR(100) NOT NULL,
     departamento VARCHAR(100) NOT NULL,
-    cantidad_alumnos INT DEFAULT 0,
+    cantidad_estudiantes INT DEFAULT 0,
     coordinador_id INT REFERENCES docentes(usuario_id) ON DELETE SET NULL,
     jefatura_id INT REFERENCES jefaturas(usuario_id) ON DELETE SET NULL
   );
@@ -87,18 +96,28 @@ const setupQuery = `
   );
 `;
 
-//---------------------------Ejecucion-------------------------------------
+//------------------ejecucion-----------------------
+/*
+    ------------Funcion-----------------
+    runSetup: 
+        Ejecuta de manera asíncrona la consulta de 
+        configuración inicial de la base de datos y 
+        cierra el pool de conexiones al finalizar.
+
+    ----------------------------------
+*/
 const runSetup = async () => {
   try {
-    console.log("Conectando a PostgreSQL y creando tablas...");
+    console.log("⏳ Conectando a PostgreSQL y creando tablas...");
     await pool.query(setupQuery);
-    console.log("¡Base de datos inicializada con éxito! Tablas y datos creados.");
+    console.log("✅ ¡Base de datos inicializada con éxito! Tablas y datos creados.");
   } catch (err) {
-    console.error("Error al inicializar la base de datos:", err);
+    console.error("❌ Error al inicializar la base de datos:", err);
   } finally {
     // Cerramos la conexión para que el script termine automáticamente
     pool.end(); 
   }
 };
+
 
 runSetup();

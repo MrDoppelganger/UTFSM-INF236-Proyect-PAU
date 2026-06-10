@@ -1,5 +1,15 @@
-const pool = require('./db');
+//-------------------Librerias--------------------
+const pool = require('../config/db');
 
+//------------------Consultas SQL------------------
+/*
+    ------------Query-------------------
+    insertMockDataQuery: 
+        Cadena de texto que limpia datos previos usando 
+        TRUNCATE e inserta los datos de prueba simulados 
+        (mock data) para verificar el funcionamiento del sistema.
+    ----------------------------------
+*/
 const insertMockDataQuery = `
   -- 1. LIMPIAR DATOS PREVIOS (Opcional, pero recomendado para evitar duplicados de RUT/Correo)
   -- Usamos TRUNCATE con CASCADE para limpiar todo en orden.
@@ -24,12 +34,12 @@ const insertMockDataQuery = `
   INSERT INTO jefaturas (usuario_id, carrera_supervisa) VALUES
   (4, 'Ingeniería Civil Informática');
 
-  INSERT INTO estudiantes (usuario_id, carrera, situacion_academica, estado_cursoEAA) VALUES
+  INSERT INTO estudiantes (usuario_id, carrera, situacion_academica, estado_curso_eaa) VALUES
   (3, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
   (5, 'Ingeniería Civil Matemática', 'Regular', 'Sin Realizar');
 
   -- 4. INSERTAR ASIGNATURAS (Depende de Jefatura)
-  INSERT INTO asignaturas (nombre_asignatura, departamento, cantidad_alumnos, coordinador_id, jefatura_id) VALUES
+  INSERT INTO asignaturas (nombre_asignatura, departamento, cantidad_estudiantes, coordinador_id, jefatura_id) VALUES
   ('Estructuras de Datos', 'Informática', 40, 1, 4),
   ('Programación de Software', 'Informática', 60, 6, 4),
   ('Bases de Datos', 'Informática', 50, 1, 4),
@@ -69,6 +79,14 @@ const insertMockDataQuery = `
   (5, 3, 70);
 `;
 
+//------------------ejecucion-----------------------
+/*
+    ------------Funcion-----------------
+    runMockData: 
+        Ejecuta de manera asíncrona la consulta para 
+        insertar los datos falsos y cierra la conexión.
+
+*/
 const runMockData = async () => {
   try {
     console.log("⏳ Insertando datos de prueba...");

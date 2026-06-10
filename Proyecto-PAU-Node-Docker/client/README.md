@@ -1,47 +1,49 @@
 # Cliente
 
-### <u>Estructura</u>:
-
-```bash
-├──client/
-    ├── node_modules                    #Extensiones del front-end (no se sube al repo)  
-    ├── public/                         #Archivos estaticos.
-    ├── src/                            #componentes visuales.
-        ├── assets/
-        ├── components/
-        ├── context/
-        ├── pages/
-            └── Dashboard.jsx
-        ├── App.css
-        ├── App.jsx
-        ├── index.css
-        └── main.jsx    
-    ├── Dockerfile                      #Config del docker para el Front.
-    ├── index.html                      #Punto inicial del React y vite                      
-    ├── package-lock.json
-    ├── package.json                    #Dependencias del front-end
-    ├── README.md                   
-    └── vite.config.js                  #Config del servidor
-```
-### <u> Consideraciones</u>:
+Este directorio contiene el código fuente del frontend de la aplicación. aqui se hubica 
+todo el contenido del REACT y sus herramientas que nos permiten este frontend mas pulido.
 
 ---
 
-## React + Vite
+### <u>Estructura</u>:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+```bash
+├── client/
+│   ├── node_modules/                   # Dependencias instaladas (ignoradas en el git, se instalan sola).
+│   ├── public/                         # Archivos estáticos accesibles públicamente.
+│   ├── src/                            # Código principal del frontend.
+│   │   ├── assets/                     # Imágenes, íconos y otros recursos (hero.png, vite.svg).
+│   │   ├── components/                 # Componentes reutilizables de React (AyudantiaCard, Modal, Sidebar, etc).
+│   │   ├── context/                    # Contextos globales de React (ThemeContext para el modo oscuro).
+│   │   ├── pages/                      # Vistas principales de la aplicación.
+│   │   │   └── Dashboard.jsx           # Vista principal de la pagina
+│   │   ├── App.jsx                     # Componente raíz que define la estructura principal.
+│   │   ├── App.css                     # Carga los estilos de la pagina
+│   │   ├── main.jsx                    # Punto de entrada y montaje de React.
+│   │   └── index.css                   # Archivo principal de Tailwind y estilos base globales.
+│   ├── Dockerfile                      # Configuración de la imagen Docker para el frontend.
+│   ├── index.html                      # Plantilla HTML inicial donde se inyecta Vite y React.
+│   ├── eslint.config.js                # Configuración del linter (ESLint).
+│   ├── package-lock.json               # Árbol de versiones de dependencias bloqueadas.
+│   ├── package.json                    # Dependencias del frontend y scripts npm.
+│   ├── vite.config.js                  # Configuración del servidor de desarrollo y bundler de Vite.                       
+│   └── README.md
+```
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### <u>Herramientas Instaladas e Infraestructura</u>:
 
-## React Compiler
+Para garantizar una experiencia de desarrollo moderna y ágil, utilizamos las siguientes herramientas a partir
+de la libreria principal de REACT:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+*   **Vite:** Se utiliza como empaquetador principal (bundler) y servidor de desarrollo. Fue elegido por encima 
+de "Create React App" debido a su extrema velocidad de construcción y a su servidor de desarrollo instantáneo 
+utilizando *Hot Module Replacement (HMR)*.
+*   **Tailwind CSS:** Framework de CSS orientado a utilidades. Se instaló para construir una interfaz moderna, 
+limpia y responsive sin la necesidad de escribir y mantener archivos CSS gigantes. Permite aplicar estilos 
+directamente en las clases de los componentes React.
+*   **ESLint:** Herramienta para analizar de forma estática el código JavaScript y React. Se configuró para m
+antener un estilo de codificación consistente y detectar posibles errores o malas prácticas antes de siquiera 
+ejecutar el código.
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

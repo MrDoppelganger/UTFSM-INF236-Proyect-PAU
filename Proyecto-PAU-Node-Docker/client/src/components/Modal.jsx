@@ -1,8 +1,24 @@
+//-------------------Librerias--------------------
 import React, { useEffect } from 'react';
 import Button from './Button';
 
+//------------------Componente--------------------
+/*
+    ------------Componente-----------------
+    Modal: 
+        Renderiza una ventana emergente sobre el contenido 
+        principal y bloquea el desplazamiento del fondo.
+    ------------Parametros----------------
+    isOpen (boolean): Indica si el modal debe ser visible.
+    onClose (function): Callback ejecutado para cerrar el modal.
+    title (string): Título superior que muestra el modal.
+    children (ReactNode): Contenido interno del modal.
+    --------------Return------------------
+    JSX.Element | null: Elemento React del modal o nulo si no está abierto.
+    ----------------------------------
+*/
 export default function Modal({ isOpen, onClose, title, children }) {
-  // Prevent scrolling when modal is open
+  // Evitar scroll cuando el modal está abierto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -16,16 +32,16 @@ export default function Modal({ isOpen, onClose, title, children }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/50 backdrop-blur-sm transition-opacity">
-      {/* Backdrop */}
+      {/* Fondo Oscuro (Backdrop) */}
       <div className="absolute inset-0" onClick={onClose}></div>
       
-      {/* Modal Content */}
+      {/* Contenido del Modal */}
       <div 
         className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
       >
-        {/* Header */}
+        {/* Cabecera */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             {title}
@@ -40,12 +56,12 @@ export default function Modal({ isOpen, onClose, title, children }) {
           </button>
         </div>
 
-        {/* Body */}
+        {/* Cuerpo */}
         <div className="p-6 overflow-y-auto">
           {children}
         </div>
 
-        {/* Footer */}
+        {/* Pie de página */}
         <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex justify-end">
           <Button variant="secondary" onClick={onClose}>
             Cerrar

@@ -1,16 +1,27 @@
+//-------------------Librerias--------------------
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import AyudantiaCard from '../components/AyudantiaCard';
 import Modal from '../components/Modal';
 import ThemeToggle from '../components/ThemeToggle';
 
+//------------------Componente--------------------
+/*
+    ------------Componente-----------------
+    Dashboard: 
+        Vista principal de la aplicación. Orquesta la obtención 
+        de datos desde la API y maneja los modales de interacción.
+    --------------Return------------------
+    JSX.Element: Vista completa del panel de control del estudiante.
+    ----------------------------------
+*/
 export default function Dashboard() {
   const [student, setStudent] = useState(null);
   const [postulaciones, setPostulaciones] = useState([]);
   const [ayudantias, setAyudantias] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  // Estado para el modal de vacante
+  // Estado para el modal de ayudantía
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,21 +36,21 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch student data
-        const studentRes = await fetch(`/api/estudiante/${STUDENT_ID}`);
+        // Obtener datos del estudiante
+        const studentRes = await fetch(`/api/estudiantes/${STUDENT_ID}`);
         if (studentRes.ok) {
           const studentData = await studentRes.json();
           setStudent(studentData);
         }
 
-        // Fetch postulations
-        const postRes = await fetch(`/api/estudiante/${STUDENT_ID}/postulaciones`);
+        // Obtener postulaciones del estudiante
+        const postRes = await fetch(`/api/estudiantes/${STUDENT_ID}/postulaciones`);
         if (postRes.ok) {
           const postData = await postRes.json();
           setPostulaciones(postData);
         }
 
-        // Fetch available ayudantias
+        // Obtener ayudantías disponibles
         const ayudRes = await fetch('/api/ayudantias');
         if (ayudRes.ok) {
           const ayudData = await ayudRes.json();
@@ -62,7 +73,7 @@ export default function Dashboard() {
 
   const openAvanceCurricular = async () => {
     try {
-      const res = await fetch(`/api/estudiante/${STUDENT_ID}/avance`);
+      const res = await fetch(`/api/estudiantes/${STUDENT_ID}/avance`);
       if (res.ok) {
         const data = await res.json();
         setAvanceCurricular(data);
@@ -92,7 +103,7 @@ export default function Dashboard() {
               Hola, {student?.nombre ? student.nombre.split(' ')[0] : 'Estudiante'} 👋
             </h2>
             <p className="text-slate-600 dark:text-slate-400">
-              Bienvenido a tu panel de control. Aquí puedes gestionar tus postulaciones y descubrir nuevas vacantes.
+              Bienvenido a tu panel de control. Aquí puedes gestionar tus postulaciones y descubrir nuevas ayudantías.
             </p>
           </section>
 
@@ -134,7 +145,7 @@ export default function Dashboard() {
                 )}
               </section>
 
-              {/* Sección: Vacantes Disponibles */}
+              {/* Sección: Ayudantías Disponibles */}
               <section className="animate-in slide-in-from-bottom-12 fade-in duration-1000">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
@@ -158,7 +169,7 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <div className="bg-white dark:bg-slate-800 rounded-xl p-8 text-center border border-dashed border-slate-300 dark:border-slate-700">
-                    <p className="text-slate-500 dark:text-slate-400">No hay vacantes disponibles actualmente.</p>
+                    <p className="text-slate-500 dark:text-slate-400">No hay ayudantías disponibles actualmente.</p>
                   </div>
                 )}
               </section>
@@ -199,7 +210,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <span className="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Alumnos matriculados</span>
-                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.cantidad_alumnos || 0}</span>
+                <span className="text-slate-900 dark:text-white font-medium">{selectedItem.cantidad_estudiantes || 0}</span>
               </div>
               {selectedItem.estado_actual && (
                 <div>

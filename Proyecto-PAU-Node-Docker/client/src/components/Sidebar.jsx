@@ -1,8 +1,23 @@
+//-------------------Librerias--------------------
 import React from 'react';
 
+//------------------Componente--------------------
+/*
+    ------------Componente-----------------
+    Sidebar: 
+        Panel lateral de navegación y resumen del usuario.
+        Muestra la información académica y accesos directos.
+    ------------Parametros----------------
+    student (Object): Información del estudiante actual.
+    onOpenAvanceCurricular (function): Función ejecutada 
+        al hacer clic en "Ver Avance Curricular".
+    --------------Return------------------
+    JSX.Element: Elemento <aside> con el menú lateral.
+    ----------------------------------
+*/
 export default function Sidebar({ student, onOpenAvanceCurricular }) {
-  // Determine certificate status
-  const estadoEAA = student?.estado_cursoEAA || 'Sin Realizar';
+  // Determinar el estado del certificado EAA
+  const estadoEAA = student?.estado_curso_eaa || 'Sin Realizar';
   let bubbleColor = 'bg-slate-500';
   let textColor = 'text-slate-600 dark:text-slate-400';
   if (estadoEAA === 'Vigente' || estadoEAA === 'Aprobado' || estadoEAA === 'Aprovado') {

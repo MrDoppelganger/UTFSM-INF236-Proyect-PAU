@@ -1,5 +1,21 @@
+//-------------------Librerias--------------------
 import React from 'react';
 
+//------------------Componente--------------------
+/*
+    ------------Componente-----------------
+    AyudantiaCard: 
+        Tarjeta de interfaz que resume la información de una 
+        ayudantía o postulación.
+    ------------Parametros----------------
+    data (Object): Datos de la ayudantía a mostrar.
+    onClick (function): Evento ejecutado al hacer clic en la tarjeta.
+    isPostulation (boolean): Bandera para adaptar la tarjeta si 
+        representa una postulación o una ayudantía libre.
+    --------------Return------------------
+    JSX.Element: Tarjeta renderizada con colores y estilos condicionales.
+    ----------------------------------
+*/
 export default function AyudantiaCard({ data, onClick, isPostulation = false }) {
   // Configuración de colores según estado
   const statusColors = {
