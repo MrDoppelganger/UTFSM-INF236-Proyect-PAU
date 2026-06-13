@@ -17,7 +17,7 @@ import Button from './Button';
     JSX.Element | null: Elemento React del modal o nulo si no está abierto.
     ----------------------------------
 */
-export default function Modal({ isOpen, onClose, title, children }) {
+export default function Modal({ isOpen, onClose, title, children, maxWidth = "max-w-lg" }) {
   // Evitar scroll cuando el modal está abierto
   useEffect(() => {
     if (isOpen) {
@@ -37,7 +37,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
       
       {/* Contenido del Modal */}
       <div 
-        className="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200"
+        className={`relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full ${maxWidth} overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200`}
         role="dialog"
         aria-modal="true"
       >

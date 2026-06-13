@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import AyudantiaCard from '../components/AyudantiaCard';
 import Modal from '../components/Modal';
 import ThemeToggle from '../components/ThemeToggle';
+import PostulacionesModal from '../components/PostulacionesModal';
 
 //------------------Componente--------------------
 /*
@@ -24,6 +25,9 @@ export default function Dashboard() {
   // Estado para el modal de ayudantía
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Estado para el modal de postular
+  const [isPostularModalOpen, setIsPostularModalOpen] = useState(false);
 
   // Estado para el avance curricular
   const [avanceCurricular, setAvanceCurricular] = useState([]);
@@ -106,6 +110,20 @@ export default function Dashboard() {
               Bienvenido a tu panel de control. Aquí puedes gestionar tus postulaciones y descubrir nuevas ayudantías.
             </p>
           </section>
+
+          {!loading && (
+            <div className="flex justify-center my-8 animate-in slide-in-from-bottom-6 fade-in duration-600">
+              <button 
+                onClick={() => setIsPostularModalOpen(true)}
+                className="px-8 py-4 bg-brand-secondary hover:bg-yellow-500 text-white font-bold text-xl rounded-2xl shadow-xl transform transition duration-300 hover:-translate-y-2 hover:shadow-2xl w-full max-w-2xl flex justify-center items-center gap-3"
+              >
+                <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Realizar Postulaciones
+              </button>
+            </div>
+          )}
 
           {loading ? (
             <div className="flex justify-center items-center py-20">
@@ -235,6 +253,13 @@ export default function Dashboard() {
           </div>
         )}
       </Modal>
+
+      {/* Modal de Realizar Postulaciones */}
+      <PostulacionesModal 
+        isOpen={isPostularModalOpen} 
+        onClose={() => setIsPostularModalOpen(false)}
+        ayudantias={ayudantias}
+      />
 
       {/* Modal de Avance Curricular */}
       <Modal 
