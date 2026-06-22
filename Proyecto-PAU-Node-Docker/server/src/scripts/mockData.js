@@ -23,7 +23,7 @@ const insertMockDataQuery = `
   (20444555, '0', 'estudiante.pau@usm.cl', 'password123', 'Víctor Jara'),          -- ID 3
   (18555666, '7', 'jefe.carrera@usm.cl', 'password123', 'Eloísa Díaz'),            -- ID 4
   (21666777, '2', 'ayudante.pro@usm.cl', 'password123', 'Gabriela Mistral'),       -- ID 5
-  (15333444, '1', 'profe.tercero@usm.cl', 'password123', 'Alan Turing');           -- ID 6
+  (15333444, '1', 'profe.tercero@usm.cl', 'password123', 'Alan Turing'),           -- ID 6
   (17777888, '9', 'carl.gauss@usm.cl', 'password123', 'Carl Gauss'),               -- ID 7
   (18888999, 'K', 'isaac.newton@usm.cl', 'password123', 'Isaac Newton'),           -- ID 8
   (19999000, '1', 'marie.curie@usm.cl', 'password123', 'Marie Curie'),             -- ID 9
@@ -48,13 +48,13 @@ const insertMockDataQuery = `
   (41111000, 'K', 'matias.torres@usm.cl', 'password123', 'Matías Torres'),         -- ID 28
   (42222000, '1', 'antonia.fuentes@usm.cl', 'password123', 'Antonia Fuentes'),     -- ID 29
   (43333000, '2', 'sebastian.diaz@usm.cl', 'password123', 'Sebastián Díaz'),       -- ID 30
-  (44444000, '3', 'valentina.morales@usm.cl', 'password123', 'Valentina Morales')  -- ID 31
+  (44444000, '3', 'valentina.morales@usm.cl', 'password123', 'Valentina Morales');  -- ID 31
 
   -- 3. ASIGNAR ROLES (Herencia)
   INSERT INTO docentes (usuario_id, departamento) VALUES
   (1, 'Informática'),
   (2, 'Informática'),
-  (6, 'Informática');
+  (6, 'Informática'),
   (7, 'Matemática'),
   (8, 'Física'),
   (9, 'Química'),
@@ -68,17 +68,17 @@ const insertMockDataQuery = `
   (17, 'Física'),
   (18, 'Electrónica'),
   (19, 'Electrónica'),
-  (20, 'Informática')
+  (20, 'Informática');
 
   INSERT INTO jefaturas (usuario_id, carrera_supervisa) VALUES
-  (4, 'Ingeniería Civil Informática');
+  (4, 'Ingeniería Civil Informática'),
   (21, 'Ingeniería Civil Matemática'),
   (22, 'Ingeniería Civil Física'),
-  (23, 'Ingeniería Civil Informática')
+  (23, 'Ingeniería Civil Informática');
 
   INSERT INTO estudiantes (usuario_id, carrera, situacion_academica, estado_curso_eaa) VALUES
   (3, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
-  (5, 'Ingeniería Civil Matemática', 'Regular', 'Sin Realizar');
+  (5, 'Ingeniería Civil Matemática', 'Regular', 'Sin Realizar'),
   (24, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
   (25, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
   (26, 'Ingeniería Civil Matemática', 'Regular', 'Vigente'),
@@ -86,7 +86,7 @@ const insertMockDataQuery = `
   (28, 'Ingeniería Civil Física', 'Regular', 'Vigente'),
   (29, 'Ingeniería Civil Informática', 'Regular', 'Vigente'),
   (30, 'Ingeniería Civil Matemática', 'Regular', 'Sin Realizar'),
-  (31, 'Ingeniería Civil Informática', 'Regular', 'Vigente')
+  (31, 'Ingeniería Civil Informática', 'Regular', 'Vigente');
 
   -- 4. INSERTAR ASIGNATURAS (Depende de Jefatura)
   INSERT INTO asignaturas (nombre_asignatura, departamento, cantidad_estudiantes, coordinador_id, jefatura_id) VALUES
@@ -94,7 +94,7 @@ const insertMockDataQuery = `
   ('Programación de Software', 'Informática', 60, 6, 4),
   ('Bases de Datos', 'Informática', 50, 1, 4),
   ('Ingeniería de Software', 'Informática', 30, 2, 4),
-  ('Arquitectura de Computadores', 'Informática', 45, 1, 4);
+  ('Arquitectura de Computadores', 'Informática', 45, 1, 4),
   ('Matemática 1', 'Matemática', 200, 7, 21),
   ('Matemática 2', 'Matemática', 150, 7, 21),
   ('Física General 1', 'Física', 200, 8, 22),
@@ -113,7 +113,7 @@ const insertMockDataQuery = `
   (3, 1), -- Roberto en Bases de Datos (Roberto coordinador)
   (3, 2), -- Ada en Bases de Datos
   (4, 2), -- Ada en Ingeniería de Software (Ada coordinador)
-  (5, 1); -- Roberto en Arquitectura de Computadores (Roberto coordinador)
+  (5, 1), -- Roberto en Arquitectura de Computadores (Roberto coordinador)
   (6, 7), -- Gauss en Matemática 1 (Gauss coordinador)
   (6, 14), -- John von en Matemática 1 
   (7, 7), -- Gauss en Matemática 2 (Gauss coordinador)
@@ -133,7 +133,7 @@ const insertMockDataQuery = `
   ('Cátedra', 1, 4, 'Promedio general > 75', 2, 2),
   ('Corrección', 3, 4, 'Aprobar Bases de Datos con > 70', 3, 1),
   ('Laboratorio', 2, 6, 'Conocimientos de Docker y Node', 4, 2),
-  ('Cátedra', 1, 4, 'Aprobación de Arquitectura', 5, 1);
+  ('Cátedra', 1, 4, 'Aprobación de Arquitectura', 5, 1),
   ('Cátedra', 8, 4, 'Promedio superior a 65', 6, 7),
   ('Corrección', 6, 2, 'Haber aprobado con nota > 75', 6, 14),
   ('Cátedra', 5, 4, 'Promedio superior a 70', 7, 7),
@@ -143,14 +143,14 @@ const insertMockDataQuery = `
   ('Corrección', 6, 4, 'Promedio general > 65 y haber aprobado la asignatura', 10, 11),
   ('Cátedra', 4, 4, 'Aprobación de Programación', 11, 10),
   ('Laboratorio', 4, 6, 'Haber aprobado con nota > 65', 13, 12),
-  ('Laboratorio', 5, 6, 'Haber aprobado con nota > 70', 14, 10),
+  ('Laboratorio', 5, 6, 'Haber aprobado con nota > 70', 14, 10);
 
   -- 7. INSERTAR POSTULACIONES
   INSERT INTO postulaciones (estado_actual, ayudantia_id, estudiante_id, jefatura_id) VALUES
   ('En Revisión', 1, 3, 4),
   ('Aceptada', 2, 5, 4),
   ('Aceptada', 3, 3, 4),
-  ('Rechazada', 5, 3, 4);
+  ('Rechazada', 5, 3, 4),
   ('En Revisión', 6, 24, 23),
   ('Aceptada', 7, 24, 23),
   ('En Revisión', 8, 25, 22),
@@ -161,8 +161,8 @@ const insertMockDataQuery = `
   ('En Revisión', 13, 27, 23),
   ('Rechazada', 14, 28, 23),
   ('En Revisión', 15, 28, 23),
-  ('Aceptada', 16, 29, 23),
-  ('En Revisión', 17, 29, 23),
+  ('Aceptada', 13, 29, 23),
+  ('En Revisión', 15, 29, 23),
   ('En Revisión', 10, 30, 23),
   ('Rechazada', 7, 30, 21),
   ('Aceptada', 12, 31, 23),
@@ -174,7 +174,7 @@ const insertMockDataQuery = `
   (3, 2, 60),
   (3, 4, 95),
   (5, 1, 55),
-  (5, 3, 70);
+  (5, 3, 70),
   (24, 6, 88),
   (24, 7, 82),
   (24, 10, 91),
