@@ -36,26 +36,25 @@ export default function Dashboard() {
   // El ID del estudiante de prueba es 3 (Víctor Jara)
   const STUDENT_ID = 3;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  // Reemplaza tu función fetchData completa por esta:
+  const fetchData = async () => {
       try {
         setLoading(true);
-        // Obtener datos del estudiante
-        const studentRes = await fetch(`/api/estudiantes/${STUDENT_ID}`);
+        
+        // Agregamos { cache: 'no-store' } para evitar que el navegador nos mienta
+        const studentRes = await fetch(`/api/estudiantes/${STUDENT_ID}`, { cache: 'no-store' });
         if (studentRes.ok) {
           const studentData = await studentRes.json();
           setStudent(studentData);
         }
 
-        // Obtener postulaciones del estudiante
-        const postRes = await fetch(`/api/estudiantes/${STUDENT_ID}/postulaciones`);
+        const postRes = await fetch(`/api/estudiantes/${STUDENT_ID}/postulaciones`, { cache: 'no-store' });
         if (postRes.ok) {
           const postData = await postRes.json();
           setPostulaciones(postData);
         }
 
-        // Obtener ayudantías disponibles
-        const ayudRes = await fetch('/api/ayudantias');
+        const ayudRes = await fetch('/api/ayudantias', { cache: 'no-store' });
         if (ayudRes.ok) {
           const ayudData = await ayudRes.json();
           setAyudantias(ayudData);
@@ -67,6 +66,7 @@ export default function Dashboard() {
       }
     };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -259,6 +259,9 @@ export default function Dashboard() {
         isOpen={isPostularModalOpen} 
         onClose={() => setIsPostularModalOpen(false)}
         ayudantias={ayudantias}
+        student={student}   
+        studentId={STUDENT_ID}
+        onPostulacionExitosa={fetchData}
       />
 
       {/* Modal de Avance Curricular */}

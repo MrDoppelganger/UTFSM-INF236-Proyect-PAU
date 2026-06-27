@@ -5,6 +5,7 @@ const express = require('express');
 const ayudantiasRoutes = require('./routes/ayudantiasRoutes');
 const estudiantesRoutes = require('./routes/estudiantesRoutes');
 const testRoutes = require('./routes/testRoutes');
+const postulacionesRoutes = require('./routes/postulacionesRoutes');
 
 //------------------Inicialización------------------
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/ayudantias', ayudantiasRoutes);
 app.use('/api/estudiantes', estudiantesRoutes);
 app.use('/test', testRoutes);
+app.use('/api/postulaciones', postulacionesRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {

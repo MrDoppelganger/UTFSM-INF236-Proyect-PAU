@@ -3,7 +3,7 @@ import Modal from './Modal';
 import Button from './Button';
 import AyudantiaCardHorizontal from './AyudantiaCardHorizontal';
 
-export default function PostulacionesModal({ isOpen, onClose, ayudantias = [] }) {
+export default function PostulacionesModal({ isOpen, onClose, ayudantias = [], student, studentId, onPostulacionExitosa }) {
   const [selectedAyudantia, setSelectedAyudantia] = useState(null);
   
   // Filters state
@@ -60,6 +60,44 @@ export default function PostulacionesModal({ isOpen, onClose, ayudantias = [] })
 
   const handlePostular = () => {
     alert("Funcionalidad de postulación en desarrollo (Prototipo).");
+  };
+
+  const enviarPostulacion = async (idAyudantia) => {
+    // Comprobar que tenga situacion academica Regular
+    if (student && student.situacion_academica !== 'Regular') {
+      alert(`Solicitud rechazada: Tu situación académica actual es '${student.situacion_academica}'. Debes ser alumno Regular para postular.`);
+      return; 
+    }
+
+    try {
+      const respuesta = await fetch('/api/postulaciones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({   
+          ayudantia_id: idAyudantia,
+          estudiante_id: studentId // Se usa el ID que viene en el prop student
+        }),
+      });
+
+      if (respuesta.ok) {
+        alert("Postulación enviada exitosamente.");
+        handleClose(); // Cierra el modal y limpia la selección correctamente
+        
+        // Si se pasó la función para recargar los datos, se ejecuta
+        if (onPostulacionExitosa) {
+          await onPostulacionExitosa(); 
+        }
+      } else {
+        const errorData = await respuesta.json().catch(() => ({}));
+        console.error("Detalles del error backend:", errorData);
+        alert(`Error al postular: ${errorData.error || respuesta.statusText}`);
+      }
+    } catch (error) {
+      console.error("Error de red al enviar la postulación:", error);
+      alert("Error de red. Intenta de nuevo.");
+    }
   };
 
   return (
@@ -206,7 +244,7 @@ export default function PostulacionesModal({ isOpen, onClose, ayudantias = [] })
 
           <div className="flex justify-center pt-6">
             <button 
-              onClick={handlePostular}
+              onClick={() => enviarPostulacion(selectedAyudantia.id)}
               className="px-8 py-3 bg-brand-secondary hover:bg-yellow-500 text-white font-bold rounded-xl shadow-lg transform transition hover:-translate-y-1 hover:shadow-xl w-full md:w-auto text-lg"
             >
               Postular a esta Ayudantía
